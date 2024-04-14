@@ -1,0 +1,45 @@
+Haapolahti
+Harjukankaan monttu
+Haukilahti
+Hossalaislammet
+Iso-Ruuhijärvi
+Iso-Söimi
+Jormuanlahti
+Kivijoki
+Koivusaaren matalikko
+Kolmisoppi
+Korpipuro
+Kortejärvi
+Kuikansalmi
+Kuopionlahti
+Lahnalammet
+Lehmilampi
+Linlonlahti
+Lokkiluoto
+Meri
+Metsälampi
+Muddusjärvi
+Mustalampi
+Mäntylahti
+Niemisjärvet
+Palusjärvi
+Peräjärvi
+Pieni Särkinen
+Pitkälampi
+Pohjalampi
+Rautupuro
+Räväjärvi
+Saarijärvi
+Savilahti
+Siika-Valkeinen
+Siikakoski
+Surrinlampi
+Särkijärvi
+Taivallampi
+Telkänlampi
+Ullavanjärvi
+Venetjoen tekojärvi
+Venäinlampi
+Viitalampi
+Vuolasniva
+Vuontele
