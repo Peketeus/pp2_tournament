@@ -108,7 +108,7 @@ public class GenerateRandomLakes {
     }
 
     /**
-     * Adds 10 either 15min or 30min times to the 'lengths' arraylist. Can add 30min up to 4 times.
+     * Adds 10 either 15min or 30min times to the 'lengths' arraylist. Can add 30min up to 'halfHourCap' times.
      */
     private void setRandomLengths() {
         Random rand = new Random();
@@ -116,13 +116,14 @@ public class GenerateRandomLakes {
         temp.add("15min");
         temp.add("30min");
 
+        int halfHourCap = 4;    // By changing this value you can limit the 30min competition amount.
         int halfHour = 0;
         for (int i = 0; i < 10; i++) {
             int randomIndex = rand.nextInt(temp.size());
             String length = temp.get(randomIndex);
 
             // If 30min is randomly selected and there are already four 30min lengths, 15min is added instead.
-            if (length.equals("30min") && halfHour >= 4) {
+            if (length.equals("30min") && halfHour >= halfHourCap) {
                 length = "15min";
             }
 
@@ -142,6 +143,9 @@ public class GenerateRandomLakes {
     private void setRandomCompTypes() {
         Random rand = new Random();
         ArrayList<String> temp = new ArrayList<>();
+        temp.add("kaikki lajit");   // 'Kaikki lajit' is added multiple times to ensure 'suurin kala' is not selected
+        temp.add("kaikki lajit");   // too often.
+        temp.add("kaikki lajit");
         temp.add("kaikki lajit");
         temp.add("suurin kala");
         temp.add("kolme suurinta");
@@ -166,7 +170,11 @@ public class GenerateRandomLakes {
         }
     }
 
-
+    /**
+     * Running main tests the class and generates random lakes.
+     * @param args not in use
+     * @throws Exception if something goes wrong while trying to read a .txt file.
+     */
     public static void main(String[] args) throws Exception {
         try {
             GenerateRandomLakes generator = new GenerateRandomLakes();
