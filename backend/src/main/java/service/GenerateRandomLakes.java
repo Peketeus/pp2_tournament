@@ -147,6 +147,7 @@ public class GenerateRandomLakes {
         temp.add("kaikki lajit");   // too often.
         temp.add("kaikki lajit");
         temp.add("kaikki lajit");
+        temp.add("ruutupilkki");
         temp.add("suurin kala");
         temp.add("kolme suurinta");
         temp.add("viisi suurinta");
