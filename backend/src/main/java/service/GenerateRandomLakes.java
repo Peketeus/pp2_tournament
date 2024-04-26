@@ -153,12 +153,13 @@ public class GenerateRandomLakes {
         temp.add("viisi suurinta");
 
         int suurinKala = 0;
+        int suurinKalaCap = 3; // How many 'suurin kala' competitions are allowed to be selected
         for (int i = 0; i < 10; i++) {
             int randomIndex = rand.nextInt(temp.size());
             String compType = temp.get(randomIndex);
 
             // Checks if there are three 'suurinKala' competition types already rolled. Replaces 'compType' with 'kaikki lajit' if true.
-            if ((compType.equals("suurin kala") || compType.equals("kolme suurinta") || compType.equals("viisi suurinta")) && suurinKala >= 3) {
+            if ((compType.equals("suurin kala") || compType.equals("kolme suurinta") || compType.equals("viisi suurinta")) && suurinKala >= suurinKalaCap) {
                 compType = "kaikki lajit";
             }
 
