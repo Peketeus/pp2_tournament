@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * Generates 10 randomly selected lakes, time of days, seasons, competition durations and competition types with few
  * exceptions. Every lake needs to be unique and one lake is selected as a night, because the night is not available at all
- * lakes. Three mornings, mid-days, evenings and one night. Maximum of four 30min competitions and max 3 largest fish
+ * lakes. 9 randomly selected day times and one night. Maximum of four 30min competitions and maximum of 'suurinKalaCap' largest fish
  * competition type.
  */
 public class GenerateRandomLakes {
@@ -80,21 +80,27 @@ public class GenerateRandomLakes {
     }
 
 
+    /**
+     * Randomly selects 9 different times of day + one night
+     */
     private void initTimes() {
-        times.add("aamu");
-        times.add("aamu");
-        times.add("aamu");
-        times.add("keskipäivä");
-        times.add("keskipäivä");
-        times.add("keskipäivä");
-        times.add("ilta");
-        times.add("ilta");
-        times.add("ilta");
+        Random rand = new Random();
+        ArrayList<String> temp = new ArrayList<>();
+
+        temp.add("aamu");
+        temp.add("keskipäivä");
+        temp.add("ilta");
+
+        for (int i = 0; i < 9; i++) {
+            int randomIndex = rand.nextInt(temp.size());
+            String time = temp.get(randomIndex);
+            times.add(time);
+        }
         times.add("yö");
     }
 
     /**
-     * Adds 3 mornings, mid-days, evenings and one night to the seasons arraylist
+     * Randomly selects seasons. Syystalvi, keskitalvi or kevättalvi.
      */
     private void setRandomSeasons() {
         Random rand = new Random();
@@ -137,7 +143,7 @@ public class GenerateRandomLakes {
     }
 
     /**
-     * Adds 10 random competition types to the 'compTypes' arraylist. Maximum of 3 largest fish competition types
+     * Adds 10 random competition types to the 'compTypes' arraylist. Maximum of 'suurinKalaCap' largest fish competition types
      * can be added.
      */
     private void setRandomCompTypes() {
@@ -147,18 +153,19 @@ public class GenerateRandomLakes {
         temp.add("kaikki lajit");   // too often.
         temp.add("kaikki lajit");
         temp.add("kaikki lajit");
+        temp.add("kaikki lajit");
         temp.add("ruutupilkki");
         temp.add("suurin kala");
         temp.add("kolme suurinta");
         temp.add("viisi suurinta");
 
         int suurinKala = 0;
-        int suurinKalaCap = 3; // How many 'suurin kala' competitions are allowed to be selected
+        int suurinKalaCap = 1; // How many 'suurin kala' competitions are allowed to be selected
         for (int i = 0; i < 10; i++) {
             int randomIndex = rand.nextInt(temp.size());
             String compType = temp.get(randomIndex);
 
-            // Checks if there are three 'suurinKala' competition types already rolled. Replaces 'compType' with 'kaikki lajit' if true.
+            // Checks if there are 'suurinKalaCap' amount of 'suurinKala' competition types already rolled. Replaces 'compType' with 'kaikki lajit' if true.
             if ((compType.equals("suurin kala") || compType.equals("kolme suurinta") || compType.equals("viisi suurinta")) && suurinKala >= suurinKalaCap) {
                 compType = "kaikki lajit";
             }
