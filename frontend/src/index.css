@@ -10,17 +10,18 @@ body {
 }
 
 .main-container {
-  padding: 1rem;
+  padding-bottom: 5rem;
 }
 
 .lake-container {
   margin: 0 auto;
   display: flex;
-  width: 50%;
+  width: 100%;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 1rem;
   padding: 1rem;
+  justify-content: center;
 }
 
 .loading-container {
