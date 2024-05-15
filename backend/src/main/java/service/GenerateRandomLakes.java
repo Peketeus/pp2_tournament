@@ -26,6 +26,7 @@ public class GenerateRandomLakes {
 
     }
 
+
     /**
      * Generates 10 random lakes, times, seasons, competition time and competition type by calling various methods.
      * Generated variables are added in the attributes and then are added to Lake array.
@@ -47,6 +48,7 @@ public class GenerateRandomLakes {
         }
         return result;
     }
+
 
     /**
      * Randomly picks 10 different unique lakes and adds them to the arraylist. Nighttime lake is added separately,
@@ -99,6 +101,7 @@ public class GenerateRandomLakes {
         times.add("yö");
     }
 
+
     /**
      * Randomly selects seasons. Syystalvi, keskitalvi or kevättalvi.
      */
@@ -112,6 +115,7 @@ public class GenerateRandomLakes {
             seasons.add(season);
         }
     }
+
 
     /**
      * Adds 10 either 15min or 30min times to the 'lengths' arraylist. Can add 30min up to 'halfHourCap' times.
@@ -141,6 +145,7 @@ public class GenerateRandomLakes {
             }
         }
     }
+
 
     /**
      * Adds 10 random competition types to the 'compTypes' arraylist. Maximum of 'suurinKalaCap' largest fish competition types
@@ -178,6 +183,7 @@ public class GenerateRandomLakes {
             }
         }
     }
+
 
     /**
      * Running main tests the class and generates random lakes.

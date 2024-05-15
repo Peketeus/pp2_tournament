@@ -39,7 +39,7 @@ function App() {
       )
 
       if (result?.data) {
-        setOriginalLakes(lakes)
+        setOriginalLakes(result.data)
         setIsLoading(false)
       }
     } catch (error) {
