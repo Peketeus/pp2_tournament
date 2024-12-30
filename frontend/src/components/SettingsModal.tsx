@@ -14,7 +14,7 @@ const SettingsModal = ({
     numOfComps: number,
     numOfBiggestFish: number,
     numOfHalfHourComps: number
-  ) => void
+  ) => Promise<void>
 }) => {
   const [numOfComps, setNumOfComps] = useState<number>(0)
 
@@ -59,14 +59,15 @@ const SettingsModal = ({
 
   const validateCompetitionNumbers = (
     biggestFish: number,
-    halfHour: number
+    halfHour: number,
+    numOfComps: number
   ): boolean => {
-    if (isNaN(biggestFish) || isNaN(halfHour)) {
+    if (isNaN(biggestFish) || isNaN(halfHour) || isNaN(numOfComps)) {
       alert("Syötetyt arvot eivät ole kelvollisia numeroita")
       return false
     }
 
-    if (biggestFish < 0 || halfHour < 0) {
+    if (biggestFish < 0 || halfHour < 0 || numOfComps < 0) {
       alert("Kilpailujen määrä ei voi olla negatiivinen")
       return false
     }
@@ -78,7 +79,8 @@ const SettingsModal = ({
     if (
       !validateCompetitionNumbers(
         numberOfBiggestFishCompetitions,
-        numberOfHalfHourCompetitions
+        numberOfHalfHourCompetitions,
+        numOfComps
       )
     ) {
       return
