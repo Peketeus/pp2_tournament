@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * Generates 10 randomly selected lakes, time of days, seasons, competition durations and competition types with few
  * exceptions. Every lake needs to be unique and one lake is selected as a night, because the night is not available at all
- * lakes. 9 randomly selected day times and one night. Maximum of four 30min competitions and maximum of 'suurinKalaCap' largest fish
+ * lakes. 9 randomly selected day times and one night. Maximum of 'halfHourCap' 30min competitions and maximum of 'suurinKalaCap' largest fish
  * competition type.
  */
 public class GenerateRandomLakes {
@@ -25,6 +25,7 @@ public class GenerateRandomLakes {
     public GenerateRandomLakes() throws Exception {
 
     }
+
 
     /**
      * Generates 10 random lakes, times, seasons, competition time and competition type by calling various methods.
@@ -47,6 +48,7 @@ public class GenerateRandomLakes {
         }
         return result;
     }
+
 
     /**
      * Randomly picks 10 different unique lakes and adds them to the arraylist. Nighttime lake is added separately,
@@ -99,6 +101,7 @@ public class GenerateRandomLakes {
         times.add("yö");
     }
 
+
     /**
      * Randomly selects seasons. Syystalvi, keskitalvi or kevättalvi.
      */
@@ -113,6 +116,7 @@ public class GenerateRandomLakes {
         }
     }
 
+
     /**
      * Adds 10 either 15min or 30min times to the 'lengths' arraylist. Can add 30min up to 'halfHourCap' times.
      */
@@ -122,7 +126,7 @@ public class GenerateRandomLakes {
         temp.add("15min");
         temp.add("30min");
 
-        int halfHourCap = 4;    // By changing this value you can limit the 30min competition amount.
+        int halfHourCap = 4;    // By changing this value you can limit the 30min competition amount. TODO: Change halfHourCap to a attribute what can be modified via set methods.
         int halfHour = 0;
         for (int i = 0; i < 10; i++) {
             int randomIndex = rand.nextInt(temp.size());
@@ -142,6 +146,7 @@ public class GenerateRandomLakes {
         }
     }
 
+
     /**
      * Adds 10 random competition types to the 'compTypes' arraylist. Maximum of 'suurinKalaCap' largest fish competition types
      * can be added.
@@ -160,7 +165,7 @@ public class GenerateRandomLakes {
         temp.add("viisi suurinta");
 
         int suurinKala = 0;
-        int suurinKalaCap = 1; // How many 'suurin kala' competitions are allowed to be selected
+        int suurinKalaCap = 1; // How many 'suurin kala' competitions are allowed to be selected TODO: Change suurinKalaCap to a attribute what can be modified via set methods.
         for (int i = 0; i < 10; i++) {
             int randomIndex = rand.nextInt(temp.size());
             String compType = temp.get(randomIndex);
@@ -178,6 +183,7 @@ public class GenerateRandomLakes {
             }
         }
     }
+
 
     /**
      * Running main tests the class and generates random lakes.
