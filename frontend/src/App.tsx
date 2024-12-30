@@ -17,6 +17,12 @@ export interface ILake {
   compType: string
 }
 
+export interface TournamentSettings {
+  numOfComps: number
+  numOfBiggestFish: number
+  numOfHalfHourComps: number
+}
+
 function App() {
   const [originalLakes, setOriginalLakes] = useState<ILake[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -31,16 +37,24 @@ function App() {
     setIsButtonVisible(true)
   }
 
-  const handleGenerateRequest = async (numOfComps: number, numOfBiggestFish: number, numOfHalfHourComps: number) => {
+  const handleGenerateRequest = async (tournamentSettings: TournamentSettings) => {
     try {
       setIsLoading(true)
 
-      console.log("Kisojen määrä:", numOfComps)
-      console.log("Suurin kala kisoja:", numOfBiggestFish)
-      console.log("Puolen tunnin kisoja:", numOfHalfHourComps)
+      console.log("Kisojen määrä:", tournamentSettings.numOfComps)
+      console.log("Suurin kala kisoja:", tournamentSettings.numOfBiggestFish)
+      console.log("Puolen tunnin kisoja:", tournamentSettings.numOfHalfHourComps)
+      
+      for (const [key, value] of Object.entries(tournamentSettings)) {
+        if (!value) {
+          tournamentSettings[key as keyof TournamentSettings] = 0
+        }
+      }
+
+      const { numOfComps, numOfBiggestFish, numOfHalfHourComps } = tournamentSettings
 
       const result = await axios.get(
-        "http://localhost:8080/api/pilkki/viewLakes"
+        `http://localhost:8080/api/pilkki/viewLakes?kisaCap=${numOfComps}&suurinkalaCap=${numOfBiggestFish}&halfhourCap=${numOfHalfHourComps}`
       )
 
       if (result?.data) {

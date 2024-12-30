@@ -2,6 +2,7 @@ import { Box, Button, Grid, Input, Typography } from "@mui/material"
 
 import { Modal } from "@mui/material"
 import { useState } from "react"
+import { TournamentSettings } from "../App"
 
 const SettingsModal = ({
   isOpen,
@@ -10,83 +11,45 @@ const SettingsModal = ({
 }: {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (
-    numOfComps: number,
-    numOfBiggestFish: number,
-    numOfHalfHourComps: number
-  ) => Promise<void>
+  onSubmit: (settings: TournamentSettings) => Promise<void>
 }) => {
-  const [numOfComps, setNumOfComps] = useState<number>(0)
-
-  const [numberOfBiggestFishCompetitions, setNumberOfBiggestFishCompetitions] =
-    useState<number>(0)
-
-  const [numberOfHalfHourCompetitions, setNumberOfHalfHourCompetitions] =
-    useState<number>(0)
-
-  const handleNumOfCompsChange = (value: string): void => {
-    if (!value) {
-      setNumOfComps(0)
-    }
-
-    const parsedValue = parseInt(value)
-    if (!isNaN(parsedValue) && parsedValue >= 0) {
-      setNumOfComps(parsedValue)
-    }
-  }
-
-  const handleNumberOfBiggestFishCompetitions = (value: string): void => {
-    if (!value) {
-      setNumberOfBiggestFishCompetitions(0)
-    }
-
-    const parsedValue = parseInt(value)
-    if (!isNaN(parsedValue) && parsedValue >= 0) {
-      setNumberOfBiggestFishCompetitions(parsedValue)
-    }
-  }
-
-  const handleNumberOfHalfHourCompetitions = (value: string): void => {
-    if (!value) {
-      setNumberOfHalfHourCompetitions(0)
-    }
-
-    const parsedValue = parseInt(value)
-    if (!isNaN(parsedValue) && parsedValue >= 0) {
-      setNumberOfHalfHourCompetitions(parsedValue)
-    }
-  }
-
-  const validateCompetitionNumbers = (
-    biggestFish: number,
-    halfHour: number,
+  const [tournamentSettings, setTournamentSettings] = useState<{
     numOfComps: number
-  ): boolean => {
-    if (isNaN(biggestFish) || isNaN(halfHour) || isNaN(numOfComps)) {
-      alert("Syötetyt arvot eivät ole kelvollisia numeroita")
-      return false
+    numOfBiggestFish: number
+    numOfHalfHourComps: number
+  }>({
+    numOfComps: 0,
+    numOfBiggestFish: 0,
+    numOfHalfHourComps: 0,
+  })
+
+  const handleNumChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ): void => {
+    event.preventDefault()
+
+    const value = event.target.value
+    const name = event.target.name
+
+    if (!value) {
+      setTournamentSettings(prevSettings => ({
+        ...prevSettings,
+        [name]: 0
+      }))
     }
 
-    if (biggestFish < 0 || halfHour < 0 || numOfComps < 0) {
-      alert("Kilpailujen määrä ei voi olla negatiivinen")
-      return false
-    }
+    const parsedValue = parseInt(value)
 
-    return true
+    if (!isNaN(parsedValue) && parsedValue >= 0) {
+      setTournamentSettings(prevSettings => ({
+        ...prevSettings,
+        [name]: parsedValue
+      }))
+    }
   }
 
   const handleSubmit = () => {
-    if (
-      !validateCompetitionNumbers(
-        numberOfBiggestFishCompetitions,
-        numberOfHalfHourCompetitions,
-        numOfComps
-      )
-    ) {
-      return
-    }
-
-    onSubmit(numOfComps, numberOfBiggestFishCompetitions, numberOfHalfHourCompetitions)
+    onSubmit(tournamentSettings)
     onClose()
   }
 
@@ -133,8 +96,9 @@ const SettingsModal = ({
               inputProps={{
                 style: { textAlign: "center" },
               }}
-              value={numOfComps}
-              onChange={(e) => handleNumOfCompsChange(e.target.value)}
+              value={tournamentSettings?.numOfComps}
+              name="numOfComps"
+              onChange={(e) => handleNumChange(e)}
               sx={{ width: "60px" }}
             />
           </Grid>
@@ -147,10 +111,9 @@ const SettingsModal = ({
               inputProps={{
                 style: { textAlign: "center" },
               }}
-              value={numberOfBiggestFishCompetitions}
-              onChange={(e) =>
-                handleNumberOfBiggestFishCompetitions(e.target.value)
-              }
+              value={tournamentSettings?.numOfBiggestFish}
+              name="numOfBiggestFish"
+              onChange={(e) => handleNumChange(e)}
               sx={{ width: "60px" }}
             />
           </Grid>
@@ -163,10 +126,9 @@ const SettingsModal = ({
               inputProps={{
                 style: { textAlign: "center" },
               }}
-              value={numberOfHalfHourCompetitions}
-              onChange={(e) =>
-                handleNumberOfHalfHourCompetitions(e.target.value)
-              }
+              value={tournamentSettings?.numOfHalfHourComps}
+              name="numOfHalfHourComps"
+              onChange={(e) => handleNumChange(e)}
               sx={{ width: "60px" }}
             />
           </Grid>
