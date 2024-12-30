@@ -5,9 +5,9 @@ import Page from "./components/Page"
 import Navbar from "./components/Navbar"
 import Toast from "./components/Toast"
 import LakeCard from "./components/LakeCard"
-import FixedButton from "./components/FixedButton"
 import { takeScreenshot } from "./utils/helpers"
-import { Button } from "@mui/material"
+import { Button, Grid, Stack } from "@mui/material"
+import SettingsModal from "./components/SettingsModal"
 
 export interface ILake {
   name: string
@@ -17,9 +17,16 @@ export interface ILake {
   compType: string
 }
 
+export interface TournamentSettings {
+  numOfComps: number
+  numOfBiggestFish: number
+  numOfHalfHourComps: number
+}
+
 function App() {
   const [originalLakes, setOriginalLakes] = useState<ILake[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
   const [isButtonVisible, setIsButtonVisible] = useState<boolean>(true)
 
@@ -30,12 +37,24 @@ function App() {
     setIsButtonVisible(true)
   }
 
-  const handleGenerateRequest = async () => {
+  const handleGenerateRequest = async (tournamentSettings: TournamentSettings) => {
     try {
       setIsLoading(true)
 
+      console.log("Kisojen määrä:", tournamentSettings.numOfComps)
+      console.log("Suurin kala kisoja:", tournamentSettings.numOfBiggestFish)
+      console.log("Puolen tunnin kisoja:", tournamentSettings.numOfHalfHourComps)
+      
+      for (const [key, value] of Object.entries(tournamentSettings)) {
+        if (!value) {
+          tournamentSettings[key as keyof TournamentSettings] = 0
+        }
+      }
+
+      const { numOfComps, numOfBiggestFish, numOfHalfHourComps } = tournamentSettings
+
       const result = await axios.get(
-        "http://localhost:8080/api/pilkki/viewLakes"
+        `http://localhost:8080/api/pilkki/viewLakes?kisaCap=${numOfComps}&suurinkalaCap=${numOfBiggestFish}&halfhourCap=${numOfHalfHourComps}`
       )
 
       if (result?.data) {
@@ -55,19 +74,42 @@ function App() {
     setError("")
   }
 
+  const handleSettingsForm = () => {
+    setIsSettingsModalOpen(true)
+  }
+
   return (
     <>
       <Navbar />
-      {isButtonVisible && (
-        <Button
-          variant="contained"
-          color="secondary"
-          sx={{ marginTop: "1rem" }}
-          onClick={handleScreenshot}
-        >
-          Take screenshot
-        </Button>
-      )}
+      <Grid container justifyContent="center">
+        <Grid item xs={6}>
+          <Stack direction="row" spacing={2} justifyContent="center" style={{ marginTop: "1rem" }}>
+            {isButtonVisible && (
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{ marginTop: "1rem" }}
+                onClick={handleScreenshot}
+              >
+                Take screenshot
+              </Button>
+            )}
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{ marginTop: "1rem" }}
+              onClick={handleSettingsForm}
+            >
+              Open settings form
+            </Button>
+          </Stack>
+        </Grid>
+      </Grid>
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        onSubmit={handleGenerateRequest}
+      />
       <div className="main-container">
         <Page isLoading={isLoading}>
           <div className="lake-container">
@@ -92,12 +134,6 @@ function App() {
           handleClose={handleErrorClose}
         />
       )}
-      <FixedButton
-        buttonTitle="Generate tournament"
-        isDisabled={isLoading}
-        onClick={handleGenerateRequest}
-        visible={isButtonVisible}
-      />
     </>
   )
 }
