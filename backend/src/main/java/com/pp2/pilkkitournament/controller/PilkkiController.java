@@ -22,10 +22,13 @@ public class PilkkiController {
 
 
     @GetMapping("/viewLakes")
-    public Lake[] viewLakes() throws Exception {
-        LOGGER.info("Received request to viewLakes.");
+    public Lake[] viewLakes(
+            @RequestParam int suurinkalaCap,
+            @RequestParam int halfhourCap
+    ) throws Exception {
+        LOGGER.info("Received request to viewLakes with parameters: suurinkalaCap={}, halfhourCap={}", suurinkalaCap, halfhourCap);
 
-        GenerateRandomLakes randomLakes = new GenerateRandomLakes();
+        GenerateRandomLakes randomLakes = new GenerateRandomLakes(suurinkalaCap, halfhourCap);
         return randomLakes.generate();
     }
 }

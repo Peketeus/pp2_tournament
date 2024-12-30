@@ -3,6 +3,7 @@ package service;
 import model.Lake;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -13,6 +14,15 @@ import java.util.Random;
  */
 public class GenerateRandomLakes {
 
+    private int suurinkalaCap = 0;
+    private int halfhourCap = 0;
+
+    private static final List<String> SUURIN_KALA_TYPES = List.of("suurin kala", "kolme suurinta", "viisi suurinta");
+    private static final List<String> TIMES = List.of("aamu", "keskipäivä", "ilta");
+    private static final String[] SEASONS = {"syystalvi", "keskitalvi", "kevättalvi"};
+
+    private final Random rand = new Random();
+
     private ArrayList<String> names = new ArrayList<>();
     private ArrayList<String> times = new ArrayList<>();
     private ArrayList<String> seasons = new ArrayList<>();
@@ -22,8 +32,18 @@ public class GenerateRandomLakes {
     private CreateLakeList lakes = new CreateLakeList(false);
     private CreateLakeList nlakes = new CreateLakeList(true);
 
-    public GenerateRandomLakes() throws Exception {
+    public GenerateRandomLakes(int suurinkalaCap, int halfhourCap) throws Exception {
+        setSuurinkalaCap(suurinkalaCap);
+        setHalfhourCap(halfhourCap);
+    }
 
+    public void setSuurinkalaCap(int cap) {
+        this.suurinkalaCap = cap;
+    }
+
+
+    public void setHalfhourCap(int cap) {
+        this.halfhourCap = cap;
     }
 
 
@@ -86,17 +106,8 @@ public class GenerateRandomLakes {
      * Randomly selects 9 different times of day + one night
      */
     private void initTimes() {
-        Random rand = new Random();
-        ArrayList<String> temp = new ArrayList<>();
-
-        temp.add("aamu");
-        temp.add("keskipäivä");
-        temp.add("ilta");
-
         for (int i = 0; i < 9; i++) {
-            int randomIndex = rand.nextInt(temp.size());
-            String time = temp.get(randomIndex);
-            times.add(time);
+            times.add(TIMES.get(rand.nextInt(TIMES.size())));
         }
         times.add("yö");
     }
@@ -106,13 +117,8 @@ public class GenerateRandomLakes {
      * Randomly selects seasons. Syystalvi, keskitalvi or kevättalvi.
      */
     private void setRandomSeasons() {
-        Random rand = new Random();
-        String[] temp = new String[] {"syystalvi", "keskitalvi", "kevättalvi"};
-
         for (int i = 0; i < 10; i++) {
-            int randomIndex = rand.nextInt(temp.length - 1); // -1 to prevent index out of bounds
-            String season = temp[randomIndex];
-            seasons.add(season);
+            seasons.add(SEASONS[rand.nextInt(SEASONS.length)]);
         }
     }
 
@@ -121,25 +127,13 @@ public class GenerateRandomLakes {
      * Adds 10 either 15min or 30min times to the 'lengths' arraylist. Can add 30min up to 'halfHourCap' times.
      */
     private void setRandomLengths() {
-        Random rand = new Random();
-        ArrayList<String> temp = new ArrayList<>();
-        temp.add("15min");
-        temp.add("30min");
-
-        int halfHourCap = 4;    // By changing this value you can limit the 30min competition amount. TODO: Change halfHourCap to a attribute what can be modified via set methods.
         int halfHour = 0;
         for (int i = 0; i < 10; i++) {
-            int randomIndex = rand.nextInt(temp.size());
-            String length = temp.get(randomIndex);
-
-            // If 30min is randomly selected and there are already four 30min lengths, 15min is added instead.
-            if (length.equals("30min") && halfHour >= halfHourCap) {
+            String length = rand.nextBoolean() ? "30min" : "15min";
+            if (length.equals("30min") && halfHour >= halfhourCap) {
                 length = "15min";
             }
-
             lengths.add(length);
-
-            // Increases 'halfHour' variable by one each time if 30min is added to the arraylist.
             if (length.equals("30min")) {
                 halfHour++;
             }
@@ -154,31 +148,30 @@ public class GenerateRandomLakes {
     private void setRandomCompTypes() {
         Random rand = new Random();
         ArrayList<String> temp = new ArrayList<>();
-        temp.add("kaikki lajit");   // 'Kaikki lajit' is added multiple times to ensure 'suurin kala' is not selected
-        temp.add("kaikki lajit");   // too often.
-        temp.add("kaikki lajit");
-        temp.add("kaikki lajit");
         temp.add("kaikki lajit");
         temp.add("ruutupilkki");
         temp.add("suurin kala");
-        temp.add("kolme suurinta");
-        temp.add("viisi suurinta");
 
         int suurinKala = 0;
-        int suurinKalaCap = 1; // How many 'suurin kala' competitions are allowed to be selected TODO: Change suurinKalaCap to a attribute what can be modified via set methods.
+        
         for (int i = 0; i < 10; i++) {
             int randomIndex = rand.nextInt(temp.size());
             String compType = temp.get(randomIndex);
 
+            if (compType.equals("suurin kala")) {
+                int randIndex = rand.nextInt(3);
+                compType = SUURIN_KALA_TYPES.get(randIndex);
+            }
+
             // Checks if there are 'suurinKalaCap' amount of 'suurinKala' competition types already rolled. Replaces 'compType' with 'kaikki lajit' if true.
-            if ((compType.equals("suurin kala") || compType.equals("kolme suurinta") || compType.equals("viisi suurinta")) && suurinKala >= suurinKalaCap) {
+            if (SUURIN_KALA_TYPES.contains(compType) && suurinKala >= suurinkalaCap) {
                 compType = "kaikki lajit";
             }
 
             compTypes.add(compType);
 
             // Increases 'suurinKala' variable by one each time if any of the suurin kala type is added to the arraylist.
-            if (compType.equals("suurin kala") || compType.equals("kolme suurinta") || compType.equals("viisi suurinta")) {
+            if (SUURIN_KALA_TYPES.contains(compType)) {
                 suurinKala++;
             }
         }
@@ -192,7 +185,7 @@ public class GenerateRandomLakes {
      */
     public static void main(String[] args) throws Exception {
         try {
-            GenerateRandomLakes generator = new GenerateRandomLakes();
+            GenerateRandomLakes generator = new GenerateRandomLakes(3, 3);
             Lake[] lakes1 = generator.generate();
 
             for (int i = 0; i < lakes1.length; i++) {
