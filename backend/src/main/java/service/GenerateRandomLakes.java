@@ -75,8 +75,6 @@ public class GenerateRandomLakes {
      * because night is not available on all lakes.
      */
     private void setRandomNames() {
-        Random rand = new Random();
-
         // Adds 9 random unique lakes (daytime)
         for (int i = 0; i < 9; i++) {
             int randomIndex = rand.nextInt(lakes.getLakes().size());
@@ -146,7 +144,6 @@ public class GenerateRandomLakes {
      * can be added.
      */
     private void setRandomCompTypes() {
-        Random rand = new Random();
         ArrayList<String> temp = new ArrayList<>();
         temp.add("kaikki lajit");
         temp.add("ruutupilkki");
