@@ -5,11 +5,11 @@ import Page from "./components/Page"
 import Navbar from "./components/Navbar"
 import Toast from "./components/Toast"
 import LakeCard from "./components/LakeCard"
-import { takeScreenshot } from "./utils/helpers"
+import { delay, takeScreenshot } from "./utils/helpers"
 import { Button, Grid, Stack } from "@mui/material"
 import SettingsModal from "./components/SettingsModal"
 
-export interface ILake {
+export type ILake = {
   name: string
   time: string
   season: string
@@ -17,7 +17,7 @@ export interface ILake {
   compType: string
 }
 
-export interface TournamentSettings {
+export type TournamentSettings = {
   numOfComps: number
   numOfBiggestFish: number
   numOfHalfHourComps: number
@@ -32,7 +32,7 @@ function App() {
 
   const handleScreenshot = async () => {
     setIsButtonVisible(false)
-    await new Promise((resolve) => setTimeout(resolve, 100))
+    await delay(100)
     await takeScreenshot()
     setIsButtonVisible(true)
   }
@@ -40,10 +40,6 @@ function App() {
   const handleGenerateRequest = async (tournamentSettings: TournamentSettings) => {
     try {
       setIsLoading(true)
-
-      console.log("Kisojen määrä:", tournamentSettings.numOfComps)
-      console.log("Suurin kala kisoja:", tournamentSettings.numOfBiggestFish)
-      console.log("Puolen tunnin kisoja:", tournamentSettings.numOfHalfHourComps)
       
       for (const [key, value] of Object.entries(tournamentSettings)) {
         if (!value) {
