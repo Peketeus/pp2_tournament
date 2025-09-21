@@ -2,9 +2,9 @@ package service;
 
 import javax.imageio.IIOException;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class CreateLakeList {
@@ -14,6 +14,7 @@ public class CreateLakeList {
 
     /**
      * Constructor
+     * 
      * @param night True if night. Otherwise day
      */
     public CreateLakeList(boolean night) throws Exception {
@@ -22,10 +23,10 @@ public class CreateLakeList {
         readLakesFromFile(night);
     }
 
-
     /**
      * Reads the lake names from .txt files. Night lakes are in their
      * own .txt file.
+     * 
      * @param night True if night. Otherwise day
      * @throws Exception If .txt is missing
      */
@@ -37,8 +38,12 @@ public class CreateLakeList {
             fileName = "lakes.txt";
         }
 
-        File file = new File("E:\\Projects\\pilkki\\backend\\src\\main\\resources\\properties\\" + fileName);
-        try (BufferedReader fi = new BufferedReader(new FileReader(file))) {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("properties/" + fileName);
+        if (inputStream == null) {
+            throw new Exception("File not found in resources/properties: " + fileName);
+        }
+
+        try (BufferedReader fi = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             ArrayList<String> temp = new ArrayList<>();
             while ((line = fi.readLine()) != null) {
@@ -57,16 +62,13 @@ public class CreateLakeList {
         }
     }
 
-
     public ArrayList<String> getLakes() {
         return lakes;
     }
 
-
     public ArrayList<String> getNightLakes() {
         return nightLakes;
     }
-
 
     public static void main(String[] args) throws Exception {
         CreateLakeList lakeList = new CreateLakeList(true);

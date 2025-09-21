@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IconButton, Snackbar } from "@mui/material"
+import { Snackbar } from "@mui/material"
+import CloseIcon from "@mui/icons-material/Close"
 import { SyntheticEvent } from "react"
 
 interface ToastProps {
@@ -9,20 +10,12 @@ interface ToastProps {
 }
 
 const Toast: React.FC<ToastProps> = ({ errorMessage, isError, handleClose }) => {
-  const action = (
-    <>
-      <IconButton
-        onClick={handleClose}
-      >
-        X
-      </IconButton>
-    </>
-  )
-  
+  const action = <CloseIcon onClick={handleClose} sx={{ cursor: "pointer" }} />
+
   return (
     <Snackbar
       open={isError}
-      autoHideDuration={6000}
+      autoHideDuration={5000}
       onClose={handleClose}
       message={errorMessage}
       action={action}

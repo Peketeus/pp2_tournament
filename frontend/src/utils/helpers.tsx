@@ -1,5 +1,9 @@
 import html2canvas from "html2canvas"
 
+export const delay = async (delayInMs: number) => {
+  await new Promise((resolve) => setTimeout(resolve, delayInMs))
+}
+
 export const takeScreenshot = async () => {
   const element = document.documentElement
   const canvas = await html2canvas(element, {
