@@ -22,7 +22,7 @@ const LakeContainer = ({ isLoading, lakes }: LakeContainerProps) => {
       {lakes.map((lake) => (
         <LakeCard
           key={lake.name}
-          imageUrl={`src/assets/lakes/${lake.name.toLowerCase()}.png`}
+          imageUrl={`lakes/${lake.name.toLowerCase()}.png`}
           lakeName={lake.name}
           season={lake.season}
           time={lake.time}
