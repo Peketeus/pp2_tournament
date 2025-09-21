@@ -12,7 +12,7 @@ import { TournamentSettings } from "./types/tournamentTypes"
 
 function App() {
   const [originalLakes, setOriginalLakes] = useState<ILake[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
 
