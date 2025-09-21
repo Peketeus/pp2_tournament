@@ -1,49 +1,23 @@
-*, html {
+*,
+html {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
 body {
-  background-color: #33312E;
+  background-color: #33312e;
   text-align: center;
-}
-
-.main-container {
-  padding-bottom: 5rem;
-}
-
-.lake-container {
-  margin: 0 auto;
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding: 1rem;
-  justify-content: center;
-}
-
-.loading-container {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
 button {
   padding: 1rem;
   border: none;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   font-family: "Roboto";
-  font-size: .9rem;
-  background-color: #8ED081;
+  font-size: 0.9rem;
+  background-color: #8ed081;
   color: black;
-}
-
-button:hover {
-  cursor: pointer;
-  background-color: #7cb870;
 }
 
 button:disabled {

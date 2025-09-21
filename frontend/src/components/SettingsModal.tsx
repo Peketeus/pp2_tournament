@@ -1,8 +1,8 @@
-import { Box, Button, Grid, Input, Typography } from "@mui/material"
-
-import { Modal } from "@mui/material"
 import { useState } from "react"
-import { TournamentSettings } from "../App"
+import { Button, Input, List, ListItem, ListItemText } from "@mui/material"
+
+import { TournamentSettings } from "../types/tournamentTypes"
+import PilkkiModal from "./PilkkiModal"
 
 const SettingsModal = ({
   isOpen,
@@ -32,18 +32,18 @@ const SettingsModal = ({
     const name = event.target.name
 
     if (!value) {
-      setTournamentSettings(prevSettings => ({
+      setTournamentSettings((prevSettings) => ({
         ...prevSettings,
-        [name]: 0
+        [name]: 0,
       }))
     }
 
     const parsedValue = parseInt(value)
 
     if (!isNaN(parsedValue) && parsedValue >= 0) {
-      setTournamentSettings(prevSettings => ({
+      setTournamentSettings((prevSettings) => ({
         ...prevSettings,
-        [name]: parsedValue
+        [name]: parsedValue,
       }))
     }
   }
@@ -54,101 +54,53 @@ const SettingsModal = ({
   }
 
   return (
-    <Modal
-      open={isOpen}
+    <PilkkiModal
+      contentDividers
+      isOpen={isOpen}
       onClose={onClose}
-      sx={{
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-      }}
-      slotProps={{
-        backdrop: {
-          sx: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            zIndex: -1,
-          },
-        },
-      }}
+      title="Tournament Settings"
+      actions={
+        <Button onClick={handleSubmit} variant="contained">
+          Generate tournament
+        </Button>
+      }
     >
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: { xs: "90%", sm: "80%", md: "60%", lg: "30%" },
-          bgcolor: "#8ED081",
-          borderRadius: 2,
-          boxShadow: 24,
-          p: 2,
-        }}
-      >
-        <Typography variant="h6" component="h2">
-          Tournament Settings
-        </Typography>
-
-        <Grid container mt={2} spacing={1}>
-          <Grid item xs={6} sx={{ textAlign: "start" }}>
-            <Typography>Kisojen määrä:</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Input
-              type="text"
-              inputProps={{
-                style: { textAlign: "center" },
-              }}
-              value={tournamentSettings?.numOfComps}
-              name="numOfComps"
-              onChange={(e) => handleNumChange(e)}
-              sx={{ width: "60px" }}
-            />
-          </Grid>
-          <Grid item xs={6} sx={{ textAlign: "start" }}>
-            <Typography>Suurin kala kisoja:</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Input
-              type="text"
-              inputProps={{
-                style: { textAlign: "center" },
-              }}
-              value={tournamentSettings?.numOfBiggestFish}
-              name="numOfBiggestFish"
-              onChange={(e) => handleNumChange(e)}
-              sx={{ width: "60px" }}
-            />
-          </Grid>
-          <Grid item xs={6} sx={{ textAlign: "start" }}>
-            <Typography>Puolen tunnin kisoja:</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Input
-              type="text"
-              inputProps={{
-                style: { textAlign: "center" },
-              }}
-              value={tournamentSettings?.numOfHalfHourComps}
-              name="numOfHalfHourComps"
-              onChange={(e) => handleNumChange(e)}
-              sx={{ width: "60px" }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              sx={{
-                bgcolor: "black",
-                color: "white",
-                "&:hover": {
-                  bgcolor: "black",
-                },
-              }}
-              onClick={handleSubmit}
-            >
-              Generate tournament
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-    </Modal>
+      <List>
+        <ListItem>
+          <ListItemText primary="Kisojen määrä:" />
+          <Input
+            type="text"
+            inputProps={{ style: { textAlign: "center" } }}
+            value={tournamentSettings?.numOfComps}
+            name="numOfComps"
+            onChange={handleNumChange}
+            sx={{ width: "60px" }}
+          />
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="Suurin kala kisoja:" />
+          <Input
+            type="text"
+            inputProps={{ style: { textAlign: "center" } }}
+            value={tournamentSettings?.numOfBiggestFish}
+            name="numOfBiggestFish"
+            onChange={handleNumChange}
+            sx={{ width: "60px" }}
+          />
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="Puolen tunnin kisoja:" />
+          <Input
+            type="text"
+            inputProps={{ style: { textAlign: "center" } }}
+            value={tournamentSettings?.numOfHalfHourComps}
+            name="numOfHalfHourComps"
+            onChange={handleNumChange}
+            sx={{ width: "60px" }}
+          />
+        </ListItem>
+      </List>
+    </PilkkiModal>
   )
 }
 
